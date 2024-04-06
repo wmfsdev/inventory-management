@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  p devSTACKER is a comprehensive inventory management app tailored for web developers. It allows users to keep track of various web development resources, tools, libraries, and frameworks.
+
+  ul
+    li
+      a(href="/technologies/languages") #[strong Languages:] !{language_count}
+    li 
+      a(href="frameworks") #[strong Frameworks:] !{framework_count}
+    li 
+      a(href="./libraries") #[strong Libraries:] !{library_count}
+    li 
+      a(href="./tools") #[strong Tools:] !{tool_count}

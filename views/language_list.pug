@@ -1,0 +1,13 @@
+block content
+
+each language in languages
+    div(class="container")
+        ul
+            li= `Name: ${language.title}`
+                a(href= language.urlid) test
+            li
+                a(href= language.url) website
+            li= `type system: ${language.typeSystem_list}`
+            li= `version: ${language.version}`
+            li= `released: ${language.released}`
+            li= `description: ${language.desc}`
