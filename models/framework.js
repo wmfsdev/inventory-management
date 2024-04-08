@@ -9,7 +9,11 @@ const FrameworkSchema = new Schema({
     version: { type: Number, required: true },
     released: { type: Date, required: true },
     desc: { type: String, required: true },
-    category: [{ type: Schema.Types.ObjectId, required: true, ref: "Language" }]
+    language: [{ type: Schema.Types.ObjectId, required: true, ref: "Language" }]
 });
 
-module.export = mongoose.model("Framework", FrameworkSchema)
+FrameworkSchema.virtual("urlid").get(function () {
+    return `/technologies/framework/${this._id}`;
+});
+
+module.exports = mongoose.model("Framework", FrameworkSchema)
