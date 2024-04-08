@@ -8,7 +8,7 @@ const LibrarySchema = new Schema({
     version: { type: Number, required: true },
     released: { type: Date, required: true },
     desc: { type: String, required: true },
-    category: [{ type: Schema.Types.ObjectId, required: true, ref: "Language" }]
+    language: [{ type: Schema.Types.ObjectId, required: true, ref: "Language" }]
 });
 
-module.export = mongoose.model("Library", FrameworkSchema)
+module.exports = mongoose.model("Library", LibrarySchema)
