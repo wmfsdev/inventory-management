@@ -11,4 +11,8 @@ const LibrarySchema = new Schema({
     language: [{ type: Schema.Types.ObjectId, required: true, ref: "Language" }]
 });
 
+LibrarySchema.virtual("urlid").get(function () {
+    return `/technologies/library/${this._id}`;
+});
+
 module.exports = mongoose.model("Library", LibrarySchema)
