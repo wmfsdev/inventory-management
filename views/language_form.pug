@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1=title
+
+  form(method='POST')
+    div.form-group
+      label(for='name') Name:
+      input#name(type='text' name='name' value=(undefined===author ? '' : author.first_name) )
+      label(for='type_system')= "Type system: (select multiple types using Ctrl+click)"
+      select#type_system(type='text' name='type_system' multiple size=7 value=(undefined===author ? '' : author.family_name))
+        optgroup(label= "General")
+          each item in ["Strong", "Weak"]
+            option(value= item) !{item}
+        optgroup(label= "Major")
+          each item in ["Static", "Dynamic", "Manifest", "Inferred", "Nominal", "Structural", "Duck typing"]
+            option(value= item) !{item}
+        optgroup(label= "Minor")
+          each item in ["Abstract", "Dependent", "Flow-sensitive", "Gradual", "Intersection", "Latent", "Refinement", "Substructural", "Unique", "Session"]
+            option(value= item) !{item}
+      label(for='version') Version:
+      input#version(type='string', name='version' value=(undefined===author ? '' : author.dod) )
+      label(for='version') Release Date:
+      input#release_date(type='date', name='release_date' value=(undefined===author ? '' : author.dod) )
+      label(for='description') Description:
+      textarea#description(rows="5" name='description' value=(undefined===author ? '' : author.dod) )
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
