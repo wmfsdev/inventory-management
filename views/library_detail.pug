@@ -1,0 +1,16 @@
+extends layout
+
+block content
+
+    h1= title
+    div(class="container")
+        ul
+            li= `Name: ${library.title}`
+            li= "Documentation: "
+                a(href= library.url) visit url
+            li= `Version: ${library.version}`
+            li= `Released: ${library.released}`
+            li= `Description: ${library.desc}`
+            li= `Language: `
+                each item in library.language
+                    a(href= item.urlid)= item.title

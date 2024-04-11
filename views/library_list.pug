@@ -1,0 +1,10 @@
+extends layout
+
+block content
+
+    h1= title
+    each library in libraries
+        div(class="container")
+            ul
+                li Name: 
+                    a(href= library.urlid) !{library.title}
