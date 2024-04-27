@@ -10,7 +10,7 @@ const LanguageSchema = new Schema({
     version: { type: String, required: true },
     released: { type: Date, required: true },
     desc: { type: String, required: true },
-    framework: { type: Schema.Types.ObjectId, ref: "Framework" },
+    framework: [{ type: Schema.Types.ObjectId, ref: "Framework" }],
     library: [{ type: Schema.Types.ObjectId, ref: "Library" }],
     image: { type: Schema.Types.ObjectId, ref: "Image" }
 });
@@ -27,7 +27,11 @@ LanguageSchema.virtual("tech_list").get(function () {
     return techListToString.slice(0, techListToString.length - 2)
 })
 
-LanguageSchema.virtual("released__yyyy_mm_dd").get( function() {
+LanguageSchema.virtual("due_back_formatted").get( function() {
+    return DateTime.fromJSDate(this.released).toLocaleString(DateTime.DATE_MED);
+})
+
+LanguageSchema.virtual("released_yyyy_mm_dd").get( function() {
     return DateTime.fromJSDate(this.released).toISODate()
 })
 
