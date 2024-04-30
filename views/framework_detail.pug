@@ -5,13 +5,13 @@ block content
     h1= title 
     div(class="container")
         ul
-            li= `Name: ${framework.title}`
-            li= `Type: ${framework.type}`
+            li= `Name: ${(null===framework.title ? '' : framework.title)}`
+            li= `Type: ${(null===framework.type ? '' : framework.type)}`
             li= "Documentation: "
                 a(href= framework.url) visit url
-            li= `Version: ${framework.version}`
-            li= `Released: ${framework.released}`
-            li= `Description: ${framework.desc}`
+            li= `Version: ${(null===framework.version ? '' : framework.version)}`
+            li= `Released: ${(null===framework.released ? '' : framework.released)}`
+            li= `Description: ${(null===framework.desc ? '' : framework.desc)}`
                 each item in framework.language
                     li= `Language: `
                         a(href= item.urlid) !{item.title}
