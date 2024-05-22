@@ -3,28 +3,58 @@ extends layout
 block content
   h1=title
 
-  form(method='POST')
+  form(method='POST' enctype='multipart/form-data')
     div.form-group
       label(for='name') Name:
-      input#name(type='text' name='name' value=(undefined===author ? '' : author.first_name) )
+      input#name(type='text' name='name' value=(undefined===language ? '' : language.title) )
       label(for='type_system')= "Type system: (select multiple types using Ctrl+click)"
-      select#type_system(type='text' name='type_system' multiple size=7 value=(undefined===author ? '' : author.family_name))
+      select#type_system(type='text' name='type_system' multiple size=7)
         optgroup(label= "General")
-          each item in ["Strong", "Weak"]
-            option(value= item) !{item}
+          each item, i in ["Strong", "Weak"]
+            if (!language)
+              option(value= item) !{item}
+            else if (language.typeSystem.includes(item))
+              option(value= item selected) !{item}
+            else
+              option(value= item) !{item}
         optgroup(label= "Major")
           each item in ["Static", "Dynamic", "Manifest", "Inferred", "Nominal", "Structural", "Duck typing"]
-            option(value= item) !{item}
+            if (!language)
+              option(value= item) !{item}
+            else if (language.typeSystem.includes(item))
+              option(value= item selected) !{item}
+            else
+              option(value= item) !{item}
         optgroup(label= "Minor")
           each item in ["Abstract", "Dependent", "Flow-sensitive", "Gradual", "Intersection", "Latent", "Refinement", "Substructural", "Unique", "Session"]
-            option(value= item) !{item}
+            if (!language)
+              option(value= item) !{item}
+            else if (language.typeSystem.includes(item))
+              option(value= item selected) !{item}
+            else
+              option(value= item) !{item}
       label(for='version') Version:
-      input#version(type='string', name='version' value=(undefined===author ? '' : author.dod) )
-      label(for='version') Release Date:
-      input#release_date(type='date', name='release_date' value=(undefined===author ? '' : author.dod) )
+      input#version(type='string', name='version' value=(undefined===language ? '' : language.version) )
+      label(for='release_date') Release Date:
+      input#release_date(type='date', name='release_date' value=(undefined===language ? '' : language.released_yyyy_mm_dd) )
       label(for='description') Description:
-      textarea#description(rows="5" name='description' value=(undefined===author ? '' : author.dod) )
-    button.btn.btn-primary(type='submit') Submit
+      textarea#description(rows="5" name='description')= undefined===language ? '' : language.desc
+      label(for='framework') Framework: 
+      input#framework(type='string' name='framework')
+      div.framework-list
+        if (!language)
+        else
+          each item in language.framework
+            input(type='input' value= item.title readonly="readonly")
+          p To update/delete any of the listed frameworks visit the dedicated page for the framework in question
+      button(type='button' id='play' onclick=addFramework) Add
+      input(type='file' name='upload')
+      if (language === undefined || language.image === null   )
+        input(type='hidden' name='no_image')
+      else
+        img(src=`${image}`)
+        input(type='hidden' name='image_id' value=`${language.image._id}` )
+      button.btn.btn-primary(type='submit') Submit
 
   if errors
     ul
