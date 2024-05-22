@@ -1,4 +1,5 @@
 const Framework = require('../models/framework')
+const Language = require('../models/language')
 
 const asyncHandler = require("express-async-handler")
 
@@ -29,6 +30,12 @@ exports.framework_detail = asyncHandler( async(req, res, next) => {
 
 exports.framework_create_get = asyncHandler( async(req, res, next) => {
 
+    const languages = await Language.find({}, 'title')
+
+    res.render("framework_form", {
+        title: "Create Framework",
+        languages: languages
+    })
 })
 
 exports.framework_create_post = asyncHandler( async(req, res, next) => {
