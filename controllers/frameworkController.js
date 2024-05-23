@@ -2,6 +2,17 @@ const Framework = require('../models/framework')
 const Language = require('../models/language')
 
 const asyncHandler = require("express-async-handler")
+const multer = require('multer')
+
+const storage = multer.memoryStorage()
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPEG and PNG files are allowed!'), false);
+    }
+};
+const upload = multer({ storage: storage, fileFilter: fileFilter, fileSize: 1000000 })
 
 
 exports.framework_list = asyncHandler( async(req, res, next) => {
@@ -38,6 +49,21 @@ exports.framework_create_get = asyncHandler( async(req, res, next) => {
     })
 })
 
-exports.framework_create_post = asyncHandler( async(req, res, next) => {
+// exports.framework_create_post = asyncHandler( async(req, res, next) => {  
+// })
 
-})
+exports.framework_create_post = [
+    upload.single('upload'),
+
+    body("name") 
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Please enter a name for the framework"),
+
+    asyncHandler( async(req, res, next) => {
+
+        
+    })
+
+]
