@@ -1,6 +1,7 @@
 const Framework = require('../models/framework')
 const Language = require('../models/language')
 
+const { body, validationResult } = require("express-validator")
 const asyncHandler = require("express-async-handler")
 const multer = require('multer')
 
@@ -56,10 +57,10 @@ exports.framework_create_post = [
     upload.single('upload'),
 
     body("name") 
-    .trim()
-    .isLength({ min: 1 })
-    .escape()
-    .withMessage("Please enter a name for the framework"),
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Please enter a name for the framework"),
 
     asyncHandler( async(req, res, next) => {
 
