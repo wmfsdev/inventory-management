@@ -50,12 +50,9 @@ exports.framework_create_get = asyncHandler( async(req, res, next) => {
     })
 })
 
-// exports.framework_create_post = asyncHandler( async(req, res, next) => {  
-// })
-
 exports.framework_create_post = [
     upload.single('upload'),
-
+    
     body("name") 
         .trim()
         .isLength({ min: 1 })
@@ -64,7 +61,36 @@ exports.framework_create_post = [
 
     asyncHandler( async(req, res, next) => {
 
-        
+        const errors = validationResult(req)
+
+        const languageNames = req.body.language
+
+        const languageIds = languageNames.map( async(name) => await Language.find( { title: name }, '_id' ))
+
+        const promiseValues = await Promise.all(languageIds)
+
+        function extractLanguageIds(promise) {
+            const idArray = []
+            for (let i = 0 ; i < promise.length ; i++) {
+                idArray.push(promise[i][0]._id)
+            }
+            return idArray
+        }
+
+        // console.log("language names", promiseValues)
+
+        let framework = new Framework({
+            title: req.body.name,
+            type: req.body.type,
+            url: req.body.url,
+            version: req.body.version,
+            released: req.body.released,
+            desc: req.body.desc,
+            language: extractLanguageIds(promiseValues),
+            image: null
+        })
+      
+        // console.log(framework)
     })
 
 ]
