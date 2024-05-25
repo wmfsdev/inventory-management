@@ -58,26 +58,38 @@ exports.framework_create_post = [
         .isLength({ min: 1 })
         .escape()
         .withMessage("Please enter a name for the framework"),
+    body("type") 
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Please enter a type for the framework"),
+    body("url") 
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Please enter a url for the framework's documentation"),
+    body("version") 
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Please enter a name for the framework"),
+    body("released", "Invalid date") 
+        .optional({ values: "falsy" })
+        .isISO8601()
+        .toDate(),
+    body("desc")
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("no desc"),
+    body("language")
+        .trim()
+        .escape(),
+
 
     asyncHandler( async(req, res, next) => {
 
         const errors = validationResult(req)
-
-        const languageNames = req.body.language
-
-        const languageIds = languageNames.map( async(name) => await Language.find( { title: name }, '_id' ))
-
-        const promiseValues = await Promise.all(languageIds)
-
-        function extractLanguageIds(promise) {
-            const idArray = []
-            for (let i = 0 ; i < promise.length ; i++) {
-                idArray.push(promise[i][0]._id)
-            }
-            return idArray
-        }
-
-        // console.log("language names", promiseValues)
 
         let framework = new Framework({
             title: req.body.name,
@@ -86,11 +98,49 @@ exports.framework_create_post = [
             version: req.body.version,
             released: req.body.released,
             desc: req.body.desc,
-            language: extractLanguageIds(promiseValues),
+            language: req.body.language,
             image: null
         })
-      
-        // console.log(framework)
-    })
+        console.log("errors", errors)
 
+        if (!errors.isEmpty()) {
+            console.log("fail")
+            const languages = await Language.find({}, 'title')
+            console.log(framework)
+
+            res.render("framework_form", {
+                title: "validation test",
+                framework: framework,
+                languages: languages,
+                errors: errors.array(),
+            })
+        } else {
+        
+            let languageNames = []
+
+            if (typeof req.body.language === "string") {
+                languageNames.push(req.body.language)
+            } else {
+                languageNames = req.body.language
+            }
+
+            const languageIds = languageNames.map( async(name) => await Language.find( { title: name }, '_id' ))
+
+            const promiseValues = await Promise.all(languageIds)
+
+            function extractLanguageIds(promise) {
+                const idArray = []
+                for (let i = 0 ; i < promise.length ; i++) {
+                    idArray.push(promise[i][0]._id)
+                }
+                return idArray
+            }
+            console.log("framework", framework)
+            framework.language = extractLanguageIds(promiseValues)
+            console.log("----- FRAMEWORK ----", framework)
+
+            await framework.save()
+            res.redirect(`/technologies/framework/${framework._id}`)
+        } 
+    })
 ]
