@@ -9,7 +9,8 @@ const FrameworkSchema = new Schema({
     version: { type: Number, },
     released: { type: Date, },
     desc: { type: String, },
-    language: [{ type: Schema.Types.ObjectId, ref: "Language" }]
+    language: [{ type: Schema.Types.ObjectId, ref: "Language" }],
+    image: { type: Schema.Types.ObjectId, ref: "Image" }
 });
 
 FrameworkSchema.virtual("urlid").get(function () {
