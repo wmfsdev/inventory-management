@@ -135,11 +135,18 @@ exports.framework_create_post = [
                 }
                 return idArray
             }
-            console.log("framework", framework)
             framework.language = extractLanguageIds(promiseValues)
             console.log("----- FRAMEWORK ----", framework)
 
-            await framework.save()
+            promiseValues.forEach( async(id) => {
+                const language = await Language.findById(id).exec()
+                console.log("pre push", language)
+                console.log("ID", framework._id)
+                language.framework.push(framework._id)
+                console.log("post push", language)
+                await framework.save()
+                await language.save()
+            })
             res.redirect(`/technologies/framework/${framework._id}`)
         } 
     })
