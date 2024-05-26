@@ -1,5 +1,6 @@
 const Framework = require('../models/framework')
 const Language = require('../models/language')
+const Image = require('../models/image')
 
 const { body, validationResult } = require("express-validator")
 const asyncHandler = require("express-async-handler")
@@ -103,6 +104,18 @@ exports.framework_create_post = [
         })
         console.log("errors", errors)
 
+        if (req.file) {
+            const image = new Image({
+                name: req.file.originalname,
+                img: {
+                    data: req.file.buffer,
+                    contentType: req.file.mimetype,
+                }
+            })
+            framework.image = image._id
+            await image.save()
+        }
+
         if (!errors.isEmpty()) {
             console.log("fail")
             const languages = await Language.find({}, 'title')
@@ -138,16 +151,18 @@ exports.framework_create_post = [
             framework.language = extractLanguageIds(promiseValues)
             console.log("----- FRAMEWORK ----", framework)
 
+            await framework.save()
+
             promiseValues.forEach( async(id) => {
                 const language = await Language.findById(id).exec()
-                console.log("pre push", language)
-                console.log("ID", framework._id)
+                //  console.log("pre push", language)
+                // console.log("ID", framework._id)
                 language.framework.push(framework._id)
-                console.log("post push", language)
-                await framework.save()
+                // console.log("post push", language)
                 await language.save()
             })
-            res.redirect(`/technologies/framework/${framework._id}`)
+            
+           res.redirect(`/technologies/framework/${framework._id}`)
         } 
     })
 ]
