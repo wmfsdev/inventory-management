@@ -1,6 +1,16 @@
 extends layout
 
 block content
+    block scripts
+        script(type="text/javascript").
+            window.addEventListener('DOMContentLoaded', function() {
+                const modal = document.querySelector("#modal")
+                const delete = document.querySelector(".delete")
+                
+                delete.addEventListener("click", () => {
+                    modal.showModal()
+                })
+            }, false)
 
     h1= title
     div(class="container")
