@@ -5,8 +5,7 @@ block content
     h1= title
     div(class="container")
         ul
-            li= "Name: "
-                a(href= language.urlid) !{language.title}   
+            li= `Name: ${language.title}`  
             li= "Documentation: "
                 a(href= language.url) visit url
             li= `Type System: ${language.typeSystem_list}`
@@ -16,7 +15,13 @@ block content
             li= "Technologies: "
                 each item in language.library
                     a(href=item.urlid)= `${item.title}`
+                each item in language.framework
+                    a(href=item.urlid)= `${item.title}`
+            if image
+                img(src=`${image}` alt="")
+            else
+
     p 
-        a(href=language.url+'/delete') Delete
+        a(href=`/technologies/language/${language._id}/delete`) Delete
     p 
-        a(href=language.url+'/edit') Edit
+        a(href=`/technologies/language/${language._id}/update`) Update
