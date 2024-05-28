@@ -1,6 +1,26 @@
 extends layout
 
+block scripts 
+  script(type="text/javascript").
+    window.addEventListener('DOMContentLoaded', function() {
+      const addFramework = document.getElementById('play').addEventListener('click', async () => {
+          const input = document.querySelector('#framework')
+          const frameworks = document.querySelector('.framework-list')
+          
+          if (input.value) {
+            let frameworkInput = document.createElement('input')
+      
+            frameworkInput.setAttribute("name", "frameworkvalues")
+            frameworkInput.setAttribute("readonly", "readonly")
+            frameworkInput.value = input.value
+            frameworks.append(frameworkInput)
+          } else return 
+
+        });
+      }, false);
+
 block content
+
   h1=title
 
   form(method='POST' enctype='multipart/form-data')
