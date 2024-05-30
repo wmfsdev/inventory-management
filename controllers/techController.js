@@ -94,7 +94,6 @@ exports.language_detail = asyncHandler( async(req, res, next) => {
 // LANGUAGE
 // CREATE: GET
 exports.language_create_get = asyncHandler( async(req, res, next) => {
-
     res.render("language_form", {
         title: "Add Language",
         image: null,
@@ -365,3 +364,18 @@ exports.language_update_post = [
         }
     })
 ]
+
+exports.language_delete_post = asyncHandler( async(req, res, next) => {
+
+    const language = await Language.findById(req.params.id, 'framework').exec()
+
+    language.framework.forEach( async(id) => {
+        const framework = await Framework.findById(id)
+        framework.language.pull( {_id: `${req.params.id}`} )
+        await framework.save()
+    })
+
+    // find those frameworks and remove the language id from 'language'
+    // find _id in database and delete
+    // redirect to list of languages
+})
