@@ -355,10 +355,9 @@ exports.language_update_post = [
                         languageExists.framework.push(framework._id) 
                         console.log("LANGUAGE", languageExists)
                         await framework.save()
-                        await languageExists.save()
-                        res.redirect(`/technologies/language/${language._id}`) 
                     })
-                         
+                    await languageExists.save()
+                    res.redirect(`/technologies/language/${language._id}`)        
                 }
             }
         }
