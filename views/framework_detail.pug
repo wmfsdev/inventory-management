@@ -12,6 +12,6 @@ block content
             li= `Version: ${(null===framework.version ? '' : framework.version)}`
             li= `Released: ${(null===framework.released ? '' : framework.released)}`
             li= `Description: ${(null===framework.desc ? '' : framework.desc)}`
+            li= `Language: `
                 each item in framework.language
-                    li= `Language: `
-                        a(href= item.urlid) !{item.title}
+                    a(href= item.urlid) !{item.title}
