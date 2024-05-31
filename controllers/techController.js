@@ -354,11 +354,11 @@ exports.language_update_post = [
                         
                         languageExists.framework.push(framework._id) 
                         console.log("LANGUAGE", languageExists)
-
                         await framework.save()
                         await languageExists.save()
-                        res.redirect(`/technologies/language/${language._id}`)      
+                        res.redirect(`/technologies/language/${language._id}`) 
                     })
+                         
                 }
             }
         }
@@ -367,7 +367,7 @@ exports.language_update_post = [
 
 exports.language_delete_post = asyncHandler( async(req, res, next) => {
 
-    const language = await Language.findById(req.params.id, 'framework').exec()
+    const language = await Language.findByIdAndDelete(req.params.id).exec()
 
     language.framework.forEach( async(id) => {
         const framework = await Framework.findById(id)
@@ -375,7 +375,5 @@ exports.language_delete_post = asyncHandler( async(req, res, next) => {
         await framework.save()
     })
 
-    // find those frameworks and remove the language id from 'language'
-    // find _id in database and delete
-    // redirect to list of languages
+    res.redirect(`/technologies/languages/`)
 })
