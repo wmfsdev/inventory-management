@@ -4,6 +4,7 @@ const router = express.Router();
 const tech_controller = require("../controllers/techController")
 const framework_controller = require("../controllers/frameworkController")
 const library_controller = require("../controllers/libraryController")
+
 // ROUTES
 // GET home page
 router.get('/', tech_controller.index)
@@ -14,6 +15,8 @@ router.get('/languages/create', tech_controller.language_create_get)
 // create POST - submit form
 router.post('/languages/create', tech_controller.language_create_post)
 
+
+
 router.get('/language/:id', tech_controller.language_detail)
 
 router.get('/languages', tech_controller.language_list)
@@ -23,6 +26,9 @@ router.get('/language/:id/update', tech_controller.language_update_get)
 
 // update POST
 router.post('/language/:id/update', tech_controller.language_update_post)
+
+
+router.post('/language/:id/delete', tech_controller.language_delete_post)
 
 
 // FRAMEWORKS
