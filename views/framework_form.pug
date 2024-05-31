@@ -10,14 +10,14 @@ block content
       label(for='type') Type:
       input#type(type='string', name='type' value=(undefined===framework ? '' : framework.type) )
       label(for='documentation') Documentation:
-      input#documentation(type='string', name='documentation' value=(undefined===framework ? '' : framework.url) )
+      input#documentation(type='string', name='url' value=(undefined===framework ? '' : framework.url) )
       label(for='version') Version:
       input#version(type='string', name='version' value=(undefined===framework ? '' : framework.version) )
-      label(for='release_date') Release Date:
-      input#release_date(type='date', name='release_date' value=(undefined===framework ? '' : framework.released_yyyy_mm_dd) )
-      label(for='description') Description:
-      textarea#description(rows="5" name='description')= undefined===framework ? '' : framework.desc
-      label(for='language') Language: 
+      label(for='released') Release Date:
+      input#released(type='date', name='released' value=(undefined===framework ? '' : framework.released_yyyy_mm_dd) )
+      label(for='desc') Description:
+      textarea#desc(rows="5" name='desc')= undefined===framework ? '' : framework.desc
+      label(for='language')= 'Language:' 
       select#language(type='text' name='language' multiple size=5)
         each item in languages 
           option(value= item.title) !{item.title}
