@@ -1,17 +1,11 @@
 extends layout
 
 block content
-
-    each framework in frameworks
-        div(class="container")
-            ul
-                li= `Name: ${framework.title}`
-                li= `Description: `
-                    a(href= framework.url) visit url
-                li= `Type: ${framework.type}`
-                li= `Version: ${framework.version}`
-                li= `Released: ${framework.released}`
-                li= `Description: ${framework.desc}`
-                li= `Language: `
-                    each item in framework.language
-                        a(href=item.urlid)= `${item.title}`
+  h1= title
+  each framework in frameworks
+    div(class="container")
+        ul
+          li= `Name: `
+            a(href=framework.urlid)= `${framework.title}`
+  p
+    a(href='/technologies/frameworks/create') Add New Framework
