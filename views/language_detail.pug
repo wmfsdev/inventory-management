@@ -4,12 +4,22 @@ block content
     block scripts
         script(type="text/javascript").
             window.addEventListener('DOMContentLoaded', function() {
-                const modal = document.querySelector("#modal")
-                const delete = document.querySelector(".delete")
+                const modal = document.querySelector("#modal");
+                const deleteModal = document.querySelector("#delete-modal");
+                const confirmDeletion = document.querySelector("#delete")
                 
-                delete.addEventListener("click", () => {
+                deleteModal.addEventListener("click", () => {
                     modal.showModal()
                 })
+
+                confirmDeletion.addEventListener("click", () => {
+                    
+                })
+
+                //- modal.addEventListener("close", () => {
+
+                //- })
+
             }, false)
 
     h1= title
@@ -31,7 +41,12 @@ block content
                 img(src=`${image}` alt="")
             else
 
-    p 
-        a(href=`/technologies/language/${language._id}/delete`) Delete
+    button(id="delete-modal") Delete
+
     p 
         a(href=`/technologies/language/${language._id}/update`) Update
+
+    dialog#modal
+        form(method="POST" action=`/technologies/language/${language._id}/delete`)
+            button(id="delete" type="submit" value="default") Confirm
+            button(value="cancel" formmethod="dialog") Cancel
