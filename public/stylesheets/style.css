@@ -1,8 +1,40 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: rgb(80, 135, 144);
 }
 
 a {
-  color: #00B7FF;
+  color: #e9e9e9;
+}
+
+.container img {
+  height: 150px;
+}
+
+.form-group img {
+  height: 150px;
+  max-width: 300px;
+}
+
+li a {
+  padding-left: 5px;
+  /* find last child selector  */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin-bottom: 10px;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+ul {
+  font-size: 1.5rem;
 }
