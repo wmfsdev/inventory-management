@@ -1,5 +1,4 @@
 const { body, validationResult } = require("express-validator")
-// import MODELS
 
 const Framework = require('../models/framework')
 const Tool = require('../models/tool')
@@ -47,7 +46,6 @@ exports.language_list = asyncHandler( async(req, res, next) => {
 
     const languages = await Language.find().populate("image", "img")
 
-    console.log(languages)
     res.render("language_list", {
         title: "Languages List",
         languages: languages,
@@ -72,15 +70,12 @@ exports.language_detail = asyncHandler( async(req, res, next) => {
     )
     .exec()
 
-   // console.log("language_detail", language)
     if (language.image === null) {
-        console.log("if condition works")
         res.render("language_detail", {
             title: "Languages",
             language: language,
         })
     } else {
-        console.log("if condition doesn't work")
         const image = "data:image/jpg;base64," + language.image.img.data.toString("base64")
 
         res.render("language_detail", {
@@ -144,7 +139,6 @@ exports.language_create_post = [
             desc: req.body.description,
             image: null
         })
-        console.log(language)
         if (typeof(req.body.frameworkvalues) === 'string') {
             req.body.frameworkvalues = [req.body.frameworkvalues]
         }
@@ -162,7 +156,6 @@ exports.language_create_post = [
         }
 
         if (!errors.isEmpty()) {
-            console.log("fail")
             res.render("language_form", {
                 title: "Add Language",
                 language: language,
@@ -195,7 +188,6 @@ exports.language_create_post = [
                 res.redirect(`/technologies/language/${language._id}`) 
 
         } else {
-            console.log(language)
             await language.save()
             res.redirect(`/technologies/language/${language._id}`) 
         }
@@ -208,7 +200,6 @@ exports.language_update_get = asyncHandler( async(req, res, next) => {
 
     const language = await Language.findById(req.params.id).populate("framework", "title").populate("image", "img").exec()
 
-   // console.log(language)
     if (language.image === null) {
         res.render("language_form", {
             title: "Language Update",
@@ -272,16 +263,13 @@ exports.language_update_post = [
         })
         
         if (typeof(req.body.frameworkvalues) === 'string') {
-            console.log("typeof")
             req.body.frameworkvalues = [req.body.frameworkvalues]
         }
 
         const findImage = await Language.findById(req.params.id)
 
         if (req.file) {
-        console.log("file submitted")
             if (findImage.image === null) {
-               console.log("image not found")
                 const image = new Image({
                     name: req.file.originalname,
                     img: {
@@ -304,7 +292,6 @@ exports.language_update_post = [
                 await image.save()
                 await language.save()
             } else {
-                console.log("image found")
                 const image = new Image({
                 name: req.file.originalname,
                 img: {
@@ -322,7 +309,6 @@ exports.language_update_post = [
         }
 
         if (!errors.isEmpty()) {
-            console.log("fail")
             res.render("language_form", {
                 title: "Add Language",
                 language: language,
@@ -335,7 +321,6 @@ exports.language_update_post = [
             if (languageExists) {
 
                 if (!req.body.frameworkvalues) {
-                    console.log("no values")
                     await languageExists.save()
                     res.redirect(`/technologies/language/${language._id}`) 
                 } else {
@@ -353,7 +338,6 @@ exports.language_update_post = [
                         framework.language = language._id
                         
                         languageExists.framework.push(framework._id) 
-                        console.log("LANGUAGE", languageExists)
                         await framework.save()
                     })
                     await languageExists.save()
