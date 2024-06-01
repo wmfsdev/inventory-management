@@ -20,8 +20,6 @@ const upload = multer({ storage: storage, fileFilter: fileFilter, fileSize: 1000
 exports.framework_list = asyncHandler( async(req, res, next) => {
 
     const frameworks = await Framework.find().populate({path: "language", select: "title"}).exec()
-
-    console.log(frameworks)
     
     res.render("framework_list", {
         title: "Frameworks",
@@ -32,8 +30,6 @@ exports.framework_list = asyncHandler( async(req, res, next) => {
 exports.framework_detail = asyncHandler( async(req, res, next) => {
 
     const framework = await Framework.findById(req.params.id).populate({path: "language", select: "title"}).exec()
-
-    console.log(framework)
 
     res.render("framework_detail", {
         title: "Framework Detail",
@@ -102,7 +98,6 @@ exports.framework_create_post = [
             language: req.body.language,
             image: null
         })
-        console.log("errors", errors)
 
         if (req.file) {
             const image = new Image({
@@ -117,9 +112,7 @@ exports.framework_create_post = [
         }
 
         if (!errors.isEmpty()) {
-            console.log("fail")
             const languages = await Language.find({}, 'title')
-            console.log(framework)
 
             res.render("framework_form", {
                 title: "validation test",
@@ -149,16 +142,11 @@ exports.framework_create_post = [
                 return idArray
             }
             framework.language = extractLanguageIds(promiseValues)
-            console.log("----- FRAMEWORK ----", framework)
-
             await framework.save()
 
             promiseValues.forEach( async(id) => {
                 const language = await Language.findById(id).exec()
-                //  console.log("pre push", language)
-                // console.log("ID", framework._id)
                 language.framework.push(framework._id)
-                // console.log("post push", language)
                 await language.save()
             })
             
